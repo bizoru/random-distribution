@@ -12,10 +12,13 @@ def check_list(a_list):
 
 
 def entropy(distribution):
-    result = 0.0
-    for probability in distribution:
-        result += probability * math.log(1.0 / abs(probability), 2)
-    return result
+    if sum(distribution) == 1:
+        result = 0.0
+        for probability in distribution:
+            result += probability * math.log(1.0 / abs(probability), 2)
+        return result
+    else:
+        return 0
 
 
 def create_random_probability(size):
@@ -36,11 +39,14 @@ def create_random_probability(size):
 
 
 def simulate():
-    for number in range(1, 1000, 1):
+    f = open('result.csv', 'w')
+    for number in range(1, 10000, 1):
         distribution = create_random_probability(number)
         entropy_result = entropy(distribution)
-        print "number: {} , entropy: {} ".format(number, entropy_result)
-
+        if entropy_result > 0:
+            f.write("{},{}\n".format(number,entropy_result))
+        #print "number: {} , entropy: {} ".format(number, entropy_result)
+    f.close()
 
 simulate()
 
